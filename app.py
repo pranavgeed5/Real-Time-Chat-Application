@@ -1,10 +1,12 @@
 from flask import Flask, render_template
-from flask_socketio import SocketIO, send
+from flask_socketio import SocketIO, emit
 from datetime import datetime
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
-socketio = SocketIO(app, cors_allowed_origins="*")
+
+# ✅ IMPORTANT FIX
+socketio = SocketIO(app, cors_allowed_origins="*", async_mode="eventlet")
 
 @app.route('/')
 def index():
@@ -14,7 +16,8 @@ def index():
 def handle_message(data):
     timestamp = datetime.now().strftime('%H:%M')
 
-    send({
+    # ✅ USE emit instead of send
+    emit('message', {
         'msg': data['msg'],
         'user': data['user'],
         'time': timestamp
