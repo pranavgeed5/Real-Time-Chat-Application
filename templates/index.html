@@ -1,34 +1,68 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Real-Time Chat</title>
+    <title>Chat App</title>
     <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
 
-<div class="chat-container">
-    <h2>Chat App</h2>
-    
+<div class="chat-app">
+
+    <div class="header">💬 Chat Room</div>
+
+    <!-- Username on top -->
+    <div class="name-bar">
+        <input id="username" placeholder="Enter your name..." />
+    </div>
+
+    <!-- Chat messages -->
     <div id="chat-box"></div>
 
-    <input id="message" placeholder="Type message..." />
-    <button onclick="sendMessage()">Send</button>
+    <!-- Input -->
+    <div class="input-area">
+        <input id="message" placeholder="Type a message..." />
+        <button onclick="sendMessage()">➤</button>
+    </div>
+
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+<script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
 
 <script>
     var socket = io();
 
     function sendMessage() {
         let msg = document.getElementById("message").value;
-        socket.send(msg);
+        let user = document.getElementById("username").value;
+
+        if(msg.trim() === "" || user.trim() === "") return;
+
+        socket.emit('message', {msg: msg, user: user});
         document.getElementById("message").value = "";
     }
 
+    // ENTER key support
+    document.getElementById("message").addEventListener("keypress", function(event) {
+        if (event.key === "Enter") {
+            sendMessage();
+        }
+    });
+
+    // Receive messages
     socket.on('message', function(data) {
         let chatBox = document.getElementById("chat-box");
-        let msg = `<p><b>${data.time}</b> : ${data.msg}</p>`;
+        let currentUser = document.getElementById("username").value;
+
+        let className = data.user === currentUser ? "my-msg" : "other-msg";
+
+        let msg = `
+            <div class="${className}">
+                <span class="user">${data.user}</span>
+                <p>${data.msg}</p>
+                <span class="time">${data.time}</span>
+            </div>
+        `;
+
         chatBox.innerHTML += msg;
         chatBox.scrollTop = chatBox.scrollHeight;
     });
