@@ -1,4 +1,4 @@
-Flask
+flask
 flask-socketio
-gunicorn
 eventlet
+gunicorn

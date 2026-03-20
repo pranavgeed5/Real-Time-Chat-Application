@@ -1,53 +1,36 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Chat App</title>
+    <title>Real-Time Chat</title>
     <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
 
 <div class="chat-container">
     <h2>Chat App</h2>
-
-    <input id="username" placeholder="Enter your name">
-
+    
     <div id="chat-box"></div>
 
-    <div class="input-area">
-        <input id="msg" placeholder="Type message..." onkeypress="handleKey(event)">
-        <button onclick="sendMessage()">➤</button>
-    </div>
+    <input id="message" placeholder="Type message..." />
+    <button onclick="sendMessage()">Send</button>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
 
 <script>
-    var socket = io({ transports: ['websocket'] });
+    var socket = io();
 
     function sendMessage() {
-        let user = document.getElementById("username").value;
-        let text = document.getElementById("msg").value.trim();
-
-        if(user === "" || text === "") return;
-
-        socket.send({ user: user, text: text });
-        document.getElementById("msg").value = "";
-    }
-
-    function handleKey(event) {
-        if (event.key === "Enter") sendMessage();
+        let msg = document.getElementById("message").value;
+        socket.send(msg);
+        document.getElementById("message").value = "";
     }
 
     socket.on('message', function(data) {
-        let div = document.createElement("div");
-        let currentUser = document.getElementById("username").value;
-
-        div.className = (data.user === currentUser) ? "right message" : "left message";
-
-        div.innerHTML = "<b>" + data.user + ":</b> " + data.text +
-                        " <span>(" + data.time + ")</span>";
-
-        document.getElementById("chat-box").appendChild(div);
+        let chatBox = document.getElementById("chat-box");
+        let msg = `<p><b>${data.time}</b> : ${data.msg}</p>`;
+        chatBox.innerHTML += msg;
+        chatBox.scrollTop = chatBox.scrollHeight;
     });
 </script>
 
