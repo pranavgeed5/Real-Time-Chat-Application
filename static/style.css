@@ -1,75 +1,52 @@
 body {
-    margin: 0;
-    font-family: Arial;
     background: #111b21;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
+    font-family: Arial;
 }
 
-/* container */
 .chat-container {
-    width: 380px;
-    height: 600px;
+    width: 350px;
+    height: 550px;
     background: #0b141a;
     display: flex;
     flex-direction: column;
-    border-radius: 10px;
 }
 
-/* header */
 h2 {
-    margin: 0;
-    padding: 15px;
     background: #202c33;
     color: white;
+    margin: 0;
+    padding: 10px;
     text-align: center;
 }
 
-/* username */
-#username {
-    padding: 10px;
-    border: none;
-    background: #202c33;
-    color: white;
-}
-
-/* chat area */
 #chat-box {
     flex: 1;
     padding: 10px;
     overflow-y: auto;
 }
 
-/* messages */
 .message {
-    max-width: 70%;
     padding: 8px;
     margin: 5px;
-    border-radius: 10px;
-    font-size: 14px;
-    clear: both;
+    border-radius: 8px;
+    max-width: 70%;
 }
 
 .left {
     background: #202c33;
     color: white;
-    float: left;
 }
 
 .right {
     background: #005c4b;
     color: white;
-    float: right;
+    margin-left: auto;
 }
 
-.time {
-    font-size: 10px;
-    color: lightgray;
-}
-
-/* input */
 .input-area {
     display: flex;
     padding: 10px;
@@ -81,15 +58,13 @@ h2 {
     padding: 10px;
     border-radius: 20px;
     border: none;
-    outline: none;
 }
 
 button {
     margin-left: 10px;
-    border: none;
     background: #00a884;
+    border: none;
     color: white;
-    border-radius: 50%;
     padding: 10px;
-    cursor: pointer;
+    border-radius: 50%;
 }
